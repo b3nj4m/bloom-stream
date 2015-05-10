@@ -1,6 +1,6 @@
 {
   "name": "bloom-stream",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stream-based bloom filter implementation",
   "main": "index.js",
   "scripts": {
