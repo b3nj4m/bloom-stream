@@ -31,6 +31,15 @@ function Bloom(size, numHashes, seed, hashType, streamOpts) {
 Bloom.prototype = Object.create(Stream.Writable.prototype);
 Bloom.prototype.constructor = Bloom;
 
+var log2squared = Math.pow(Math.log(2), 2);
+
+Bloom.forCapacity = function(capacity, errorRate, seed, hashType, streamOpts) {
+  errorRate = errorRate || 0.1;
+  var numHashes = Math.log2(1/errorRate);
+  var size = Math.ceil(capacity * Math.abs(Math.log(errorRate)) / (numHashes * log2squared)) * numHashes;
+  return new Bloom(size, numHashes, seed, hashType, streamOpts);
+};
+
 Bloom.prototype.computeConstants = function() {
   this.registersSize = Math.ceil(this.size / REGISTER_BITS);
 };

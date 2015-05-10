@@ -6,6 +6,8 @@ Pipe in your stream of buffers/strings to get approximate set membership (using 
 var Bloom = require('bloom-stream');
 
 var bloom = new Bloom(128, 3);
+//or
+var bloom = Bloom.forCapacity(1000000, 0.1);
 
 //...
 
@@ -29,6 +31,16 @@ Construct a new writable Bloom (extends [`Stream.Writable`](https://nodejs.org/a
 * `hashType` - which hashing algorithm to use on the values. Can be `'murmur'` or any algorithm supported by [`crypto.createHash`](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) (default: `'murmur'`).
 * `streamOpts` - the options to pass along to the stream constructor.
  
+#### Bloom.forCapacity(capacity, errorRate, seed, hashType, streamOpts)
+
+Generate a new writable Bloom with `size`, and `numHashes` suitable for approximate cardinality `capacity`, and approximate error rate `errorRate`.
+
+* `capacity` - approximate cardinality of input set
+* `errorRate` - approximate acceptable false-positive rate (`0-1`) (default `0.1`).
+* `seed` - seed integer to seed hash functions with (default `42`).
+* `hashType` - which hashing algorithm to use on the values. Can be `'murmur'` or any algorithm supported by [`crypto.createHash`](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm) (default: `'murmur'`).
+* `streamOpts` - the options to pass along to the stream constructor.
+
 #### Bloom.has(element)
 
 Test for membership of `element`.
