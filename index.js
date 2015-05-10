@@ -35,7 +35,7 @@ var log2squared = Math.pow(Math.log(2), 2);
 
 Bloom.forCapacity = function(capacity, errorRate, seed, hashType, streamOpts) {
   errorRate = errorRate || 0.1;
-  var numHashes = Math.log2(1/errorRate);
+  var numHashes = Math.ceil(Math.log2(1/errorRate));
   var size = Math.ceil(capacity * Math.abs(Math.log(errorRate)) / (numHashes * log2squared)) * numHashes;
   return new Bloom(size, numHashes, seed, hashType, streamOpts);
 };
