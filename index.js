@@ -42,6 +42,8 @@ Bloom.forCapacity = function(capacity, errorRate, seed, hashType, streamOpts) {
 
 Bloom.prototype.computeConstants = function() {
   this.registersSize = Math.ceil(this.size / REGISTER_BITS);
+  this.nextCounter = 0;
+  this.nextLimit = 1000;
 };
 
 Bloom.prototype.setHashes = function() {
@@ -69,7 +71,13 @@ Bloom.prototype._write = function(chunk, enc, next) {
   }
 
   if (next) {
-    next();
+    this.nextCounter = (this.nextCounter + 1) % this.nextLimit;
+    if (this.nextCounter === 0) {
+      setTimeout(next, 0);
+    }
+    else {
+      next();
+    }
   }
 
   return true;
