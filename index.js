@@ -61,7 +61,7 @@ Bloom.prototype.cryptoHash = function(seed, key) {
   return Math.abs(crypto.createHash(this.hashType).update(key).digest().readInt32LE(0, 4)) % this.size;
 };
 
-Bloom.prototype.write = function(chunk, enc, next) {
+Bloom.prototype._write = function(chunk, enc, next) {
   var hash;
   for (var i = 0; i < this.numHashes; i++) {
     hash = this.hashes[i](chunk);
