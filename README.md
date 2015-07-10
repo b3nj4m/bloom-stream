@@ -4,18 +4,20 @@ Pipe in your stream of buffers/strings to get approximate set membership (using 
 
 ```javascript
 var Bloom = require('bloom-stream');
+var es = require('event-stream');
+var fs = require('fs');
 
 var bloom = new Bloom(128, 3);
 //or
 var bloom = Bloom.forCapacity(1000000, 0.1);
 
-//...
-
-myDataSource.pipe(bloom);
+fs.createReadStream('data.txt')
+  .pipe(es.split())
+  .pipe(bloom);
 
 bloom.on('finish', function() {
-  console.log(bloom.has('42'));
-  console.log(bloom.has('13'));
+  console.log('has 42', bloom.has('42'));
+  console.log('has 13', bloom.has('13'));
 });
 ```
 
